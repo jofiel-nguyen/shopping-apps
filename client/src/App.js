@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
@@ -7,7 +7,9 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
+import SearchBar from './components/Destination/SearchBar';
+import DestinationList from './components/Destination/DestinationList';
+import AttractionDetails from './components/Destination/AttractionDetails';
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import NoMatch from './pages/NoMatch';
@@ -38,12 +40,100 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [destinations, setDestinations] = useState([]);
+  const [selectedAttraction, setSelectedAttraction] = useState(null);
+
+  const handleSearch = async (event) => {
+    event.preventDefault(); // Prevent form submission
+
+    try {
+      const apikey = 'ea081e7c8189b40b973d3d4c71f263d0';
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${apikey}&units=imperial`; 
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&appid=${apikey}&units=imperial`;
+
+      const [weatherResponse, forecastResponse] = await Promise.all([
+        fetch(weatherUrl),
+        fetch(forecastUrl)
+      ]);
+
+      if (!weatherResponse.ok || !forecastResponse.ok) {
+        throw new Error('Unable to fetch weather data');
+      }
+
+      const weatherData = await weatherResponse.json();
+      const forecastData = await forecastResponse.json();
+
+      // Update destinations state with the fetched data
+      const newDestinations = processWeatherAndForecastData(weatherData, forecastData);
+      setDestinations(newDestinations);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleAttractionClick = (attraction) => {
+    setSelectedAttraction(attraction);
+  };
+
+  const handleAttractionClose = () => {
+    setSelectedAttraction(null);
+  };
+
+  const processWeatherAndForecastData = (weatherData, forecastData) => {
+    // Extract relevant information from weatherData
+    const { name, main, weather } = weatherData;
+    const { temp } = main;
+    const description = weather[0].description;
+  
+    // Extract relevant information from forecastData
+    const forecastList = forecastData.list.slice(1, 4); 
+    const forecastDestinations = forecastList.map((forecastItem, index) => {
+      const forecastDate = new Date(forecastItem.dt_txt);
+      const formattedDate = `Day ${index + 1}: ${forecastDate.toLocaleDateString('en-US')}`;
+  
+      return {
+        name: weatherData.name,
+        date: formattedDate, // Use the formatted date in the format "Day: Day 1: mm/dd/yyyy"
+        temperature: forecastItem.main.temp,
+        description: forecastItem.weather[0].description,
+      };
+    });
+  
+    // Create the newDestinations array with both current weather and forecast destinations
+    const newDestinations = [
+      {
+        name,
+        date: 'Today',
+        temperature: temp,
+        description,
+      },
+      ...forecastDestinations,
+    ];
+  
+    return newDestinations;
+  };
   return (
     <ApolloProvider client={client}>
       <Router>
         <div>
           <StoreProvider>
             <Nav />
+            <form onSubmit={handleSearch}>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={handleSearchInputChange}
+                placeholder="Search for a place to go..."
+              />
+              <button type="submit">Search</button>
+            </form>
+            {/* Pass the destinations state to the DestinationList component */}
+            <DestinationList destinations={destinations} />
             <Routes>
               <Route 
                 path="/" 
