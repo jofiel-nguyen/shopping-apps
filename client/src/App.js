@@ -10,6 +10,7 @@ import { setContext } from '@apollo/client/link/context';
 import SearchBar from './components/Destination/SearchBar';
 import DestinationList from './components/Destination/DestinationList';
 import AttractionDetails from './components/Destination/AttractionDetails';
+import ImageGallery from './components/Destination/ImageGallery'; 
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import NoMatch from './pages/NoMatch';
@@ -134,6 +135,8 @@ function App() {
             </form>
             {/* Pass the destinations state to the DestinationList component */}
             <DestinationList destinations={destinations} />
+            <ImageGallery searchTerm={destinations.length > 0 ? destinations[0].name : ''} />
+
             <Routes>
               <Route 
                 path="/" 
