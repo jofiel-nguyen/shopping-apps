@@ -1,7 +1,7 @@
 {
-  "name": "mern-shopping",
+  "name": "travel-shop-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is shopping apps with checkout function",
   "main": "server/server.js",
   "scripts": {
     "start": "node server --ignore client",
@@ -11,9 +11,17 @@
     "build": "cd client && npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "wren",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhunguyen-debug/shopping-apps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nhunguyen-debug/shopping-apps/issues"
+  },
+  "homepage": "https://github.com/nhunguyen-debug/shopping-apps#readme"
 }
