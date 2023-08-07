@@ -3,131 +3,105 @@ const { User, Product, Category } = require('../models');
 
 db.once('open', async () => {
   await Category.deleteMany();
-
   const categories = await Category.insertMany([
     { name: 'Food' },
-    { name: 'Household Supplies' },
-    { name: 'Electronics' },
-    { name: 'Books' },
-    { name: 'Toys' }
+    { name: 'Travel Supplies' },
+    { name: 'Electronics and Accessories' },
+    { name: 'Health and Safety' },
+    { name: 'Miscellaneous' }
   ]);
-
+  
   console.log('categories seeded');
-
+  
   await Product.deleteMany();
-
+  
   const products = await Product.insertMany([
     {
-      name: 'Tin of Cookies',
+      name: 'Travel Snacks',
       description:
-        'Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      image: 'cookie-tin.jpg',
+        'A variety of snacks for your journey, perfect for satisfying your hunger on the go.',
+      image: 'travel-snacks.png',
       category: categories[0]._id,
-      price: 2.99,
+      price: 5.99,
       quantity: 500
     },
     {
-      name: 'Canned Coffee',
+      name: 'Travel Adapter',
       description:
-        'Praesent sed lacinia mauris. Nulla congue nibh magna, at feugiat nunc scelerisque quis. Donec iaculis rutrum vulputate. Suspendisse lectus sem, vulputate ac lectus sed, placerat consequat dui.',
-      image: 'canned-coffee.jpg',
-      category: categories[0]._id,
-      price: 1.99,
-      quantity: 500
+        'A universal travel adapter that allows you to charge your devices in different countries.',
+      image: 'travel-adapter.png',
+      category: categories[1]._id,
+      price: 12.99,
+      quantity: 200
     },
     {
-      name: 'Toilet Paper',
-      category: categories[1]._id,
+      name: 'Portable Power Bank',
       description:
-        'Donec volutpat erat erat, sit amet gravida justo sodales in. Phasellus tempus euismod urna. Proin ultrices nisi ut ipsum congue, vitae porttitor libero suscipit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam lacinia a nisi non congue.',
-      image: 'toilet-paper.jpg',
-      price: 7.99,
-      quantity: 20
+        'Never run out of battery with this portable power bank, essential for long trips.',
+      image: 'power-bank.png',
+      category: categories[2]._id,
+      price: 25.99,
+      quantity: 100
     },
     {
-      name: 'Handmade Soap',
-      category: categories[1]._id,
+      name: 'First Aid Kit',
       description:
-        'Praesent placerat, odio vel euismod venenatis, lectus arcu laoreet felis, et fringilla sapien turpis vestibulum nisl.',
-      image: 'soap.jpg',
-      price: 3.99,
+        'Be prepared for emergencies with this compact first aid kit, containing essential medical supplies.',
+      image: 'first-aid-kit.png',
+      category: categories[3]._id,
+      price: 15.99,
       quantity: 50
     },
     {
-      name: 'Set of Wooden Spoons',
+      name: 'Travel Pillow',
+      description:
+        'Get a good night\'s sleep while traveling with this comfortable and compact travel pillow.',
+      image: 'travel-pillow.png',
+      category: categories[4]._id,
+      price: 9.99,
+      quantity: 100
+    },
+    {
+      name: 'Travel Backpack',
+      description:
+        'A durable and spacious backpack, perfect for carrying your essentials while exploring new places.',
+      image: 'travel-backpack.png',
       category: categories[1]._id,
-      description:
-        'Vivamus ut turpis in purus pretium mollis. Donec turpis odio, semper vel interdum ut, vulputate at ex. Duis dignissim nisi vel tortor imperdiet finibus. Aenean aliquam sagittis rutrum.',
-      image: 'wooden-spoons.jpg',
-      price: 14.99,
-      quantity: 100
+      price: 39.99,
+      quantity: 50
     },
     {
-      name: 'Camera',
+      name: 'Travel Water Bottle',
+      description:
+        'Stay hydrated on your journey with this reusable and leak-proof travel water bottle.',
+      image: 'travel-water-bottle.png',
+      category: categories[1]._id,
+      price: 12.99,
+      quantity: 100
+    },
+    
+    {
+      name: 'Travel Journal',
+      description:
+        'Document your travel experiences and memories in this beautifully crafted travel journal.',
+      image: 'travel-journal.png',
+      category: categories[4]._id,
+      price: 8.99,
+      quantity: 80
+    },
+    {
+      name: 'Travel Adapter with USB Ports',
+      description:
+        'Charge multiple devices simultaneously with this travel adapter featuring built-in USB ports.',
+      image: 'travel-adapter-usb.png',
       category: categories[2]._id,
-      description:
-        'Vestibulum risus metus, luctus non tortor quis, tincidunt consectetur ex. Nullam vitae lobortis ligula, ut sagittis massa. Curabitur consectetur, tellus at pulvinar venenatis, erat augue cursus erat, eu ullamcorper eros lectus ultrices ipsum. Integer rutrum, augue vitae auctor venenatis, turpis turpis elementum orci, at sagittis risus mi a leo.',
-      image: 'camera.jpg',
-      price: 399.99,
-      quantity: 30
+      price: 19.99,
+      quantity: 40
     },
-    {
-      name: 'Tablet',
-      category: categories[2]._id,
-      description:
-        'In sodales, ipsum quis ultricies porttitor, tellus urna aliquam arcu, eget venenatis purus ligula ut nisi. Fusce ut felis dolor. Mauris justo ante, aliquet non tempus in, tempus ac lorem. Aliquam lacinia dolor eu sem eleifend ultrices. Etiam mattis metus metus. Sed ligula dui, placerat non turpis vitae, suscipit volutpat elit. Phasellus sagittis, diam elementum suscipit fringilla, libero mauris scelerisque ex, ac interdum diam erat non sapien.',
-      image: 'tablet.jpg',
-      price: 199.99,
-      quantity: 30
-    },
-    {
-      name: 'Tales at Bedtime',
-      category: categories[3]._id,
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ornare diam quis eleifend rutrum. Aliquam nulla est, volutpat non enim nec, pharetra gravida augue. Donec vitae dictum neque. Pellentesque arcu lorem, fringilla non ligula ac, tristique bibendum erat. Ut a semper nibh. Quisque a mi et mi tempor ultricies. Maecenas eu ipsum eu enim hendrerit accumsan at euismod urna.',
-      image: 'bedtime-book.jpg',
-      price: 9.99,
-      quantity: 100
-    },
-    {
-      name: 'Spinning Top',
-      category: categories[4]._id,
-      description: 'Ut vulputate hendrerit nibh, a placerat elit cursus interdum.',
-      image: 'spinning-top.jpg',
-      price: 1.99,
-      quantity: 1000
-    },
-    {
-      name: 'Set of Plastic Horses',
-      category: categories[4]._id,
-      description:
-        'Sed a mauris condimentum, elementum enim in, rhoncus dui. Phasellus lobortis leo odio, sit amet pharetra turpis porta quis.',
-      image: 'plastic-horses.jpg',
-      price: 2.99,
-      quantity: 1000
-    },
-    {
-      name: 'Teddy Bear',
-      category: categories[4]._id,
-      description:
-        'Vestibulum et erat finibus erat suscipit vulputate sed vitae dui. Ut laoreet tellus sit amet justo bibendum ultrices. Donec vitae felis vestibulum, congue augue eu, finibus turpis.',
-      image: 'teddy-bear.jpg',
-      price: 7.99,
-      quantity: 100
-    },
-    {
-      name: 'Alphabet Blocks',
-      category: categories[4]._id,
-      description:
-        'Morbi consectetur viverra urna, eu fringilla turpis faucibus sit amet. Suspendisse potenti. Donec at dui ac sapien eleifend hendrerit vel sit amet lectus.',
-      image: 'alphabet-blocks.jpg',
-      price: 9.99,
-      quantity: 600
-    }
   ]);
-
+  
   console.log('products seeded');
-
+ 
   await User.deleteMany();
 
   await User.create({
